@@ -71,7 +71,7 @@ This will:
 #### Test against the example
    
 ```bash
-$ cd examples/simple
+$ cd examples/yaml
 $ yarn link @pulumi/railway
 $ yarn install
 $ pulumi stack init test

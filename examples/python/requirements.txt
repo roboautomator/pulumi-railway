@@ -1,2 +1,2 @@
+pulumi-railway==0.0.1-alpha.1739024644+64d0876b.dirty
 pulumi>=3.0.0,<4.0.0
-pulumi-railway==1.1.122
