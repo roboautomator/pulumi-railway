@@ -1,10 +1,10 @@
-PROJECT_NAME := Pulumi Xyz Resource Provider
+PROJECT_NAME := Pulumi railway Resource Provider
 
-PACK             := xyz
+PACK             := railway
 PACKDIR          := sdk
-PROJECT          := github.com/pulumi/pulumi-xyz
-NODE_MODULE_NAME := @abc/xyz
-NUGET_PKG_NAME   := Abc.Xyz
+PROJECT          := github.com/roboautomator/pulumi-railway
+NODE_MODULE_NAME := @roboautomator/railway
+NUGET_PKG_NAME   := roboautomator.railway
 
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         ?= $(shell pulumictl get version)
@@ -81,15 +81,15 @@ nodejs_sdk: $(WORKING_DIR)/bin/$(PROVIDER)
 
 python_sdk: PYPI_VERSION := $(shell pulumictl get version --language python)
 python_sdk: $(WORKING_DIR)/bin/$(PROVIDER)
-	rm -rf sdk/python
-	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language python
-	cp README.md ${PACKDIR}/python/
-	cd ${PACKDIR}/python/ && \
-		python3 setup.py clean --all 2>/dev/null && \
-		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
-		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
-		rm ./bin/setup.py.bak && \
-		cd ./bin && python3 setup.py build sdist
+# 	rm -rf sdk/python
+# 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language python
+# 	cp README.md ${PACKDIR}/python/
+# 	cd ${PACKDIR}/python/ && \
+# 		python3 setup.py clean --all 2>/dev/null && \
+# 		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
+# 		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
+# 		rm ./bin/setup.py.bak && \
+# 		cd ./bin && python3 setup.py build sdist
 
 gen_examples: gen_go_example \
 		gen_nodejs_example \
@@ -127,7 +127,7 @@ down::
 	pulumi stack rm dev -y
 
 .PHONY: build
-build: provider dotnet_sdk go_sdk nodejs_sdk python_sdk
+build: provider dotnet_sdk go_sdk nodejs_sdk
 
 # Required for the codegen action that runs in pulumi/pulumi
 only_build: build

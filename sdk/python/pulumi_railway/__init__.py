@@ -11,21 +11,21 @@ from .random_component import *
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
-    import pulumi_xyz.config as __config
+    import pulumi_railway.config as __config
     config = __config
 else:
-    config = _utilities.lazy_import('pulumi_xyz.config')
+    config = _utilities.lazy_import('pulumi_railway.config')
 
 _utilities.register(
     resource_modules="""
 [
  {
-  "pkg": "xyz",
+  "pkg": "railway",
   "mod": "index",
-  "fqn": "pulumi_xyz",
+  "fqn": "pulumi_railway",
   "classes": {
-   "xyz:index:Random": "Random",
-   "xyz:index:RandomComponent": "RandomComponent"
+   "railway:index:Random": "Random",
+   "railway:index:RandomComponent": "RandomComponent"
   }
  }
 ]
@@ -33,9 +33,9 @@ _utilities.register(
     resource_packages="""
 [
  {
-  "pkg": "xyz",
-  "token": "pulumi:providers:xyz",
-  "fqn": "pulumi_xyz",
+  "pkg": "railway",
+  "token": "pulumi:providers:railway",
+  "fqn": "pulumi_railway",
   "class": "Provider"
  }
 ]

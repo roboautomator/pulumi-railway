@@ -1,11 +1,11 @@
 {
-	"name": "provider-xyz",
+	"name": "provider-railway",
 	"devDependencies": {
 		"@types/node": "^14"
 	},
 	"dependencies": {
 		"typescript": "^4.0.0",
-		"@pulumi/pulumi": "3.148.0",
-		"@pulumi/xyz": "0.0.1-alpha.1699945013+97b0e04c"
+		"@pulumi/pulumi": "^3.0.0",
+		"@pulumi/railway": "0.0.1-alpha.1739024644+64d0876b.dirty"
 	}
 }
