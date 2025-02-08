@@ -1,6 +1,6 @@
-name: provider-xyz
+name: provider-railway
 runtime: nodejs
 plugins:
   providers:
-    - name: xyz
+    - name: railway
       path: ../../bin

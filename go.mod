@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-xyz
+module github.com/roboautomator/pulumi-railway
 
 go 1.22
 

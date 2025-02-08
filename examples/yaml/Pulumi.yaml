@@ -1,17 +1,17 @@
-name: provider-xyz
+name: provider-railway
 runtime: yaml
 plugins:
   providers:
-    - name: xyz
+    - name: railway
       path: ../../bin
 
 resources:
   myRandomResource:
-    type: xyz:Random
+    type: railway:Random
     properties:
       length: 24
   myRandomComponent:
-    type: xyz:RandomComponent
+    type: railway:RandomComponent
     properties:
       length: 24
 

@@ -1,4 +1,4 @@
-module provider-xyz
+module provider-railway
 
 go 1.20
 
