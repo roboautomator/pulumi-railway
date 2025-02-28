@@ -19,6 +19,7 @@
         "provider.ts",
         "random.ts",
         "randomComponent.ts",
+        "service.ts",
         "utilities.ts"
     ]
 }

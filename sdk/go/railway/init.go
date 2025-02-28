@@ -25,6 +25,8 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &Random{}
 	case "railway:index:RandomComponent":
 		r = &RandomComponent{}
+	case "railway:index:Service":
+		r = &Service{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}

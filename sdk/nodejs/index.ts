@@ -20,6 +20,11 @@ export type RandomComponent = import("./randomComponent").RandomComponent;
 export const RandomComponent: typeof import("./randomComponent").RandomComponent = null as any;
 utilities.lazyLoad(exports, ["RandomComponent"], () => require("./randomComponent"));
 
+export { ServiceArgs } from "./service";
+export type Service = import("./service").Service;
+export const Service: typeof import("./service").Service = null as any;
+utilities.lazyLoad(exports, ["Service"], () => require("./service"));
+
 
 // Export sub-modules:
 import * as config from "./config";
@@ -36,6 +41,8 @@ const _module = {
                 return new Random(name, <any>undefined, { urn })
             case "railway:index:RandomComponent":
                 return new RandomComponent(name, <any>undefined, { urn })
+            case "railway:index:Service":
+                return new Service(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
