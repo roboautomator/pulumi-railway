@@ -9,30 +9,36 @@ using Pulumi.Serialization;
 
 namespace Pulumi.Railway
 {
-    [RailwayResourceType("railway:index:Random")]
-    public partial class Random : global::Pulumi.CustomResource
+    [RailwayResourceType("railway:index:Environment")]
+    public partial class Environment : global::Pulumi.CustomResource
     {
-        [Output("length")]
-        public Output<int> Length { get; private set; } = null!;
+        [Output("apiToken")]
+        public Output<string> ApiToken { get; private set; } = null!;
+
+        [Output("environmentId")]
+        public Output<string> EnvironmentId { get; private set; } = null!;
+
+        [Output("projectId")]
+        public Output<string> ProjectId { get; private set; } = null!;
 
         [Output("result")]
         public Output<string> Result { get; private set; } = null!;
 
 
         /// <summary>
-        /// Create a Random resource with the given unique name, arguments, and options.
+        /// Create a Environment resource with the given unique name, arguments, and options.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Random(string name, RandomArgs args, CustomResourceOptions? options = null)
-            : base("railway:index:Random", name, args ?? new RandomArgs(), MakeResourceOptions(options, ""))
+        public Environment(string name, EnvironmentArgs args, CustomResourceOptions? options = null)
+            : base("railway:index:Environment", name, args ?? new EnvironmentArgs(), MakeResourceOptions(options, ""))
         {
         }
 
-        private Random(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("railway:index:Random", name, null, MakeResourceOptions(options, id))
+        private Environment(string name, Input<string> id, CustomResourceOptions? options = null)
+            : base("railway:index:Environment", name, null, MakeResourceOptions(options, id))
         {
         }
 
@@ -48,27 +54,30 @@ namespace Pulumi.Railway
             return merged;
         }
         /// <summary>
-        /// Get an existing Random resource's state with the given name, ID, and optional extra
+        /// Get an existing Environment resource's state with the given name, ID, and optional extra
         /// properties used to qualify the lookup.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resulting resource.</param>
         /// <param name="id">The unique provider ID of the resource to lookup.</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public static Random Get(string name, Input<string> id, CustomResourceOptions? options = null)
+        public static Environment Get(string name, Input<string> id, CustomResourceOptions? options = null)
         {
-            return new Random(name, id, options);
+            return new Environment(name, id, options);
         }
     }
 
-    public sealed class RandomArgs : global::Pulumi.ResourceArgs
+    public sealed class EnvironmentArgs : global::Pulumi.ResourceArgs
     {
-        [Input("length", required: true)]
-        public Input<int> Length { get; set; } = null!;
+        [Input("apiToken", required: true)]
+        public Input<string> ApiToken { get; set; } = null!;
 
-        public RandomArgs()
+        [Input("projectId", required: true)]
+        public Input<string> ProjectId { get; set; } = null!;
+
+        public EnvironmentArgs()
         {
         }
-        public static new RandomArgs Empty => new RandomArgs();
+        public static new EnvironmentArgs Empty => new EnvironmentArgs();
     }
 }

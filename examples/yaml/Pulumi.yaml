@@ -6,15 +6,35 @@ plugins:
       path: ../../bin
 
 resources:
-  myRandomResource:
-    type: railway:Random
+  myProject:
+    type: railway:Project
     properties:
-      length: 24
-  myRandomComponent:
-    type: railway:RandomComponent
+      apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
+  myTestEnvironment:
+    type: railway:Environment
     properties:
-      length: 24
+      apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
+      projectId: ${myProject.projectId}
+  myStagingEnvironment:
+    type: railway:Environment
+    properties:
+      apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
+      projectId: ${myProject.projectId}
+  myTestService:
+    type: railway:Service
+    properties:
+      projectId: ${myProject.projectId}
+      environmentId: ${myTestEnvironment.environmentId}
+      apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
+  myStagingService:
+    type: railway:Service
+    properties:
+      projectId: ${myProject.projectId}
+      environmentId: ${myStagingEnviroment.environmentId}
+      apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
 
 outputs:
   output:
-    value: ${myRandomResource.result}
+    project: ${myProject}
+    environment: ${myEnvironment}
+    service: ${myService}

@@ -21,10 +21,10 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
-	case "railway:index:Random":
-		r = &Random{}
-	case "railway:index:RandomComponent":
-		r = &RandomComponent{}
+	case "railway:index:Environment":
+		r = &Environment{}
+	case "railway:index:Project":
+		r = &Project{}
 	case "railway:index:Service":
 		r = &Service{}
 	default:

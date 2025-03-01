@@ -10,22 +10,22 @@ import (
     "io/ioutil"
 )
 
-type Service struct{}
+type Environment struct {}
 
-type ServiceArgs struct {
-	EnvironmentId string `pulumi:"environmentId"`
-	ProjectId string `pulumi:"projectId"`
+type EnvironmentArgs struct {
 	ApiToken string `pulumi:"apiToken"`
+	ProjectId string `pulumi:"projectId"`
 }
 
-type ServiceState struct {
-	ServiceArgs
-	ServiceId string `pulumi:"serviceId"`
+
+type EnvironmentState struct {
+	EnvironmentArgs
 	Result string `pulumi:"result"`
+	EnvironmentId string `pulumi:"environmentId"`
 }
 
-func (Service) Create(ctx context.Context, name string, input ServiceArgs, preview bool) (string, ServiceState, error) {
-	state := ServiceState{ServiceArgs: input}
+func (Environment) Create(ctx context.Context, name string, input EnvironmentArgs, preview bool) (string, EnvironmentState, error) {
+	state := EnvironmentState{EnvironmentArgs: input}
 	if preview {
 		return name, state, nil
 	}
@@ -34,9 +34,9 @@ func (Service) Create(ctx context.Context, name string, input ServiceArgs, previ
 	payload := map[string]interface{}{
 		"query": fmt.Sprintf(`
 			mutation {
-			    serviceCreate(input: { name: "%s", projectId: "%s" }) {
-                    id
-            	}
+				environmentCreate(input: { name: "%s", projectId: "%s" }) {
+					id
+				}
 			}
 		`, name, input.ProjectId),
 	}
@@ -66,58 +66,36 @@ func (Service) Create(ctx context.Context, name string, input ServiceArgs, previ
 		return "", state, err
 	}
 
-	fmt.Println(string(body))
-
-	// Extract the service ID from the response body
 	var response map[string]interface{}
 	if err := json.Unmarshal(body, &response); err != nil {
 		return "", state, err
 	}
 
-	if data, ok := response["data"].(map[string]interface{}); ok {
-		if serviceCreate, ok := data["serviceCreate"].(map[string]interface{}); ok {
-			if id, ok := serviceCreate["id"].(string); ok {
-				state.ServiceId = id
-			} else {
-				return "", state, fmt.Errorf("serviceCreate.id not found in response: %v", serviceCreate)
-			}
-		} else {
-			return "", state, fmt.Errorf("serviceCreate missing in response: %v", data)
-		}
-	} else {
-		return "", state, fmt.Errorf("Invalid API response: %v", response)
-	}
+	state.EnvironmentId = response["data"].(map[string]interface{})["environmentCreate"].(map[string]interface{})["id"].(string)
+	state.Result = "Environment created successfully"
 
-
-	log.Printf("Stored ServiceId: %s", state.ServiceId)
-
-	state.Result = "Service created"
 	return name, state, nil
 }
 
-func (Service) Delete(ctx context.Context, name string, input ServiceState) error {
-
-	log.Printf("Deleting service with ID: %s", input.ServiceId)
-
-
+func (Environment) Delete(ctx context.Context, name string, input EnvironmentState) error {
 	url := "https://api.railway.app/graphql/v2"
 	payload := map[string]interface{}{
 		"query": fmt.Sprintf(`
 			mutation {
-			    serviceDelete(id: "%s")
+				environmentDelete(input: { id: "%s" }) {
+					success
+				}
 			}
-		`, input.ServiceId),
+		`, input.EnvironmentId),
 	}
 
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		log.Println("Error marshalling JSON:", err)
 		return err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		log.Println("Error creating request:", err)
 		return err
 	}
 
@@ -127,9 +105,9 @@ func (Service) Delete(ctx context.Context, name string, input ServiceState) erro
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Println("Error making request:", err)
 		return err
 	}
+
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -140,7 +118,7 @@ func (Service) Delete(ctx context.Context, name string, input ServiceState) erro
 
 	fmt.Println(string(body))
 
-	input.Result = "Service created"
+	input.Result = "Project deleted"
 
 	return nil
 }

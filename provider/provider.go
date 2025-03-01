@@ -30,12 +30,14 @@ func Provider() p.Provider {
 	// In this case, a single resource and component
 	return infer.Provider(infer.Options{
 		Resources: []infer.InferredResource{
-			infer.Resource[Random, RandomArgs, RandomState](),
+			// infer.Resource[Random, RandomArgs, RandomState](),
 			infer.Resource[Service, ServiceArgs, ServiceState](),
+			infer.Resource[Project, ProjectArgs, ProjectState](),
+			infer.Resource[Environment, EnvironmentArgs, EnvironmentState](),
 		},
-		Components: []infer.InferredComponent{
-			infer.Component[*RandomComponent, RandomComponentArgs, *RandomComponentState](),
-		},
+		// Components: []infer.InferredComponent{
+		// 	infer.Component[*RandomComponent, RandomComponentArgs, *RandomComponentState](),
+		// },
 		Config: infer.Config[Config](),
 		ModuleMap: map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",

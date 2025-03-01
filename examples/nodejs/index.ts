@@ -1,19 +1,31 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as railway from "@pulumi/railway";
-import { env } from "process";
 
-// const myRandomResource = new railway.Random("myRandomResource", {length: 24});
-// const myRandomComponent = new railway.RandomComponent("myRandomComponent", {length: 24});
-// export const output = {
-//     value: myRandomResource.result,
-// };
+const myProject = new railway.Project("myProject", {apiToken: "9fc34a78-1e12-4453-ae87-055803d35715"});
+const myEnvironment = new railway.Environment("myEnvironment", {
+    apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
+    projectId: myProject.projectId,
+});
+
+const testEnvironment = new railway.Environment("test", {
+    apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
+    projectId: myProject.projectId,
+});
 
 const myService = new railway.Service("myService", {
-    environmentId: "73de0eab-b6dd-426b-a155-2a7e32f332df",
-    projectId: "2a29134b-7629-4065-899c-7bed50d175e8",
-    apiToken: "b8d195d4-ef57-470d-bd04-164fba27d09c"
-})
+    projectId: myProject.projectId,
+    environmentId: myEnvironment.environmentId,
+    apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
+});
 
-myService.environmentId.apply((envId) => {
-    console.log(envId)
-})
+const testService = new railway.Service("testService", {
+    projectId: myProject.projectId,
+    environmentId: testEnvironment.environmentId,
+    apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
+});
+
+export const output = {
+    project: myProject,
+    environment: myEnvironment,
+    service: myService,
+};

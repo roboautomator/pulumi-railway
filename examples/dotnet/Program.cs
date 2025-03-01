@@ -5,21 +5,31 @@ using Railway = Pulumi.Railway;
 
 return await Deployment.RunAsync(() => 
 {
-    var myRandomResource = new Railway.Random("myRandomResource", new()
+    var myProject = new Railway.Project("myProject", new()
     {
-        Length = 24,
+        ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
     });
 
-    var myRandomComponent = new Railway.RandomComponent("myRandomComponent", new()
+    var myEnvironment = new Railway.Environment("myEnvironment", new()
     {
-        Length = 24,
+        ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
+        ProjectId = myProject.ProjectId,
+    });
+
+    var myService = new Railway.Service("myService", new()
+    {
+        ProjectId = myProject.ProjectId,
+        EnvironmentId = myEnvironment.EnvironmentId,
+        ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
     });
 
     return new Dictionary<string, object?>
     {
         ["output"] = 
         {
-            { "value", myRandomResource.Result },
+            { "project", myProject },
+            { "environment", myEnvironment },
+            { "service", myService },
         },
     };
 });
