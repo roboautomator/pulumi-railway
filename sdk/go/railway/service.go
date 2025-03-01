@@ -17,6 +17,7 @@ type Service struct {
 
 	ApiToken      pulumi.StringOutput `pulumi:"apiToken"`
 	EnvironmentId pulumi.StringOutput `pulumi:"environmentId"`
+	Name          pulumi.StringOutput `pulumi:"name"`
 	ProjectId     pulumi.StringOutput `pulumi:"projectId"`
 	Result        pulumi.StringOutput `pulumi:"result"`
 	ServiceId     pulumi.StringOutput `pulumi:"serviceId"`
@@ -34,6 +35,9 @@ func NewService(ctx *pulumi.Context,
 	}
 	if args.EnvironmentId == nil {
 		return nil, errors.New("invalid value for required argument 'EnvironmentId'")
+	}
+	if args.Name == nil {
+		return nil, errors.New("invalid value for required argument 'Name'")
 	}
 	if args.ProjectId == nil {
 		return nil, errors.New("invalid value for required argument 'ProjectId'")
@@ -73,6 +77,7 @@ func (ServiceState) ElementType() reflect.Type {
 type serviceArgs struct {
 	ApiToken      string `pulumi:"apiToken"`
 	EnvironmentId string `pulumi:"environmentId"`
+	Name          string `pulumi:"name"`
 	ProjectId     string `pulumi:"projectId"`
 }
 
@@ -80,6 +85,7 @@ type serviceArgs struct {
 type ServiceArgs struct {
 	ApiToken      pulumi.StringInput
 	EnvironmentId pulumi.StringInput
+	Name          pulumi.StringInput
 	ProjectId     pulumi.StringInput
 }
 
@@ -126,6 +132,10 @@ func (o ServiceOutput) ApiToken() pulumi.StringOutput {
 
 func (o ServiceOutput) EnvironmentId() pulumi.StringOutput {
 	return o.ApplyT(func(v *Service) pulumi.StringOutput { return v.EnvironmentId }).(pulumi.StringOutput)
+}
+
+func (o ServiceOutput) Name() pulumi.StringOutput {
+	return o.ApplyT(func(v *Service) pulumi.StringOutput { return v.Name }).(pulumi.StringOutput)
 }
 
 func (o ServiceOutput) ProjectId() pulumi.StringOutput {

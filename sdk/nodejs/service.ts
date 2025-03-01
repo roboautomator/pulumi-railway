@@ -33,6 +33,7 @@ export class Service extends pulumi.CustomResource {
 
     public readonly apiToken!: pulumi.Output<string>;
     public readonly environmentId!: pulumi.Output<string>;
+    public readonly name!: pulumi.Output<string>;
     public readonly projectId!: pulumi.Output<string>;
     public /*out*/ readonly result!: pulumi.Output<string>;
     public /*out*/ readonly serviceId!: pulumi.Output<string>;
@@ -54,17 +55,22 @@ export class Service extends pulumi.CustomResource {
             if ((!args || args.environmentId === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'environmentId'");
             }
+            if ((!args || args.name === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'name'");
+            }
             if ((!args || args.projectId === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
             resourceInputs["apiToken"] = args ? args.apiToken : undefined;
             resourceInputs["environmentId"] = args ? args.environmentId : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["projectId"] = args ? args.projectId : undefined;
             resourceInputs["result"] = undefined /*out*/;
             resourceInputs["serviceId"] = undefined /*out*/;
         } else {
             resourceInputs["apiToken"] = undefined /*out*/;
             resourceInputs["environmentId"] = undefined /*out*/;
+            resourceInputs["name"] = undefined /*out*/;
             resourceInputs["projectId"] = undefined /*out*/;
             resourceInputs["result"] = undefined /*out*/;
             resourceInputs["serviceId"] = undefined /*out*/;
@@ -80,5 +86,6 @@ export class Service extends pulumi.CustomResource {
 export interface ServiceArgs {
     apiToken: pulumi.Input<string>;
     environmentId: pulumi.Input<string>;
+    name: pulumi.Input<string>;
     projectId: pulumi.Input<string>;
 }

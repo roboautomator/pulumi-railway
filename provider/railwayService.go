@@ -12,10 +12,31 @@ import (
 
 type Service struct{}
 
+// type EnvironmentConfig struct {
+// 	Services map[string]map[string]interface{} `json:"services"`
+// }
+
+// type ServiceCreateResponse struct {
+// 	Data struct {
+// 		ServiceCreate struct {
+// 			ID   string `json:"id"`
+// 			Name string `json:"name"`
+// 		} `json:"serviceCreate"`
+// 	} `json:"data"`
+// }
+
+
+type ServiceCreateInput struct {
+	ProjectId string `json:"projectId"`
+	EnvironmentId string `json:"environmentId"`
+	Name string `json:"name"`
+}
+
 type ServiceArgs struct {
 	EnvironmentId string `pulumi:"environmentId"`
 	ProjectId string `pulumi:"projectId"`
 	ApiToken string `pulumi:"apiToken"`
+	Name string `pulumi:"name"`
 }
 
 type ServiceState struct {
@@ -25,73 +46,28 @@ type ServiceState struct {
 }
 
 func (Service) Create(ctx context.Context, name string, input ServiceArgs, preview bool) (string, ServiceState, error) {
+	
 	state := ServiceState{ServiceArgs: input}
-	if preview {
-		return name, state, nil
-	}
 
-	url := "https://api.railway.app/graphql/v2"
-	payload := map[string]interface{}{
-		"query": fmt.Sprintf(`
-			mutation {
-			    serviceCreate(input: { name: "%s", projectId: "%s" }) {
-                    id
-            	}
-			}
-		`, name, input.ProjectId),
-	}
-
-	jsonData, err := json.Marshal(payload)
-	if err != nil {
-		return "", state, err
-	}
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-	if err != nil {
-		return "", state, err
-	}
-
-	req.Header.Set("Authorization", "Bearer " + input.ApiToken)
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", state, err
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", state, err
-	}
-
-	fmt.Println(string(body))
-
-	// Extract the service ID from the response body
-	var response map[string]interface{}
-	if err := json.Unmarshal(body, &response); err != nil {
-		return "", state, err
-	}
-
-	if data, ok := response["data"].(map[string]interface{}); ok {
-		if serviceCreate, ok := data["serviceCreate"].(map[string]interface{}); ok {
-			if id, ok := serviceCreate["id"].(string); ok {
-				state.ServiceId = id
-			} else {
-				return "", state, fmt.Errorf("serviceCreate.id not found in response: %v", serviceCreate)
-			}
-		} else {
-			return "", state, fmt.Errorf("serviceCreate missing in response: %v", data)
+	serviceCreateQuery := `
+	mutation serviceCreate($input: ServiceCreateInput!) {
+		serviceCreate(input: $input) {
+			id
 		}
-	} else {
-		return "", state, fmt.Errorf("Invalid API response: %v", response)
+	}`
+	serviceCreateVariables := map[string]interface{}{
+		"input": ServiceCreateInput{
+			ProjectId: input.ProjectId,
+			EnvironmentId: input.EnvironmentId,
+			Name: input.Name,
+		},
 	}
 
+	serviceCreateResponse := makeGraphQLRequest(serviceCreateQuery, serviceCreateVariables, input.ApiToken)
+	fmt.Println("Service Create Response:", serviceCreateResponse)
 
-	log.Printf("Stored ServiceId: %s", state.ServiceId)
+	state.Result = serviceCreateResponse
 
-	state.Result = "Service created"
 	return name, state, nil
 }
 

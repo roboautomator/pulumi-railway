@@ -10,17 +10,32 @@ return await Deployment.RunAsync(() =>
         ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
     });
 
-    var myEnvironment = new Railway.Environment("myEnvironment", new()
+    var myTestEnvironment = new Railway.Environment("myTestEnvironment", new()
     {
         ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
         ProjectId = myProject.ProjectId,
     });
 
-    var myService = new Railway.Service("myService", new()
+    var myStagingEnvironment = new Railway.Environment("myStagingEnvironment", new()
+    {
+        ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
+        ProjectId = myProject.ProjectId,
+    });
+
+    var myTestService = new Railway.Service("myTestService", new()
     {
         ProjectId = myProject.ProjectId,
-        EnvironmentId = myEnvironment.EnvironmentId,
+        EnvironmentId = myTestEnvironment.EnvironmentId,
         ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
+        Name = "My Test Service",
+    });
+
+    var myStagingService = new Railway.Service("myStagingService", new()
+    {
+        ProjectId = myProject.ProjectId,
+        EnvironmentId = myStagingEnvironment.EnvironmentId,
+        ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
+        Name = "My Staging Service",
     });
 
     return new Dictionary<string, object?>
@@ -28,8 +43,10 @@ return await Deployment.RunAsync(() =>
         ["output"] = 
         {
             { "project", myProject },
-            { "environment", myEnvironment },
-            { "service", myService },
+            { "testEnvironment", myTestEnvironment },
+            { "testService", myTestService },
+            { "stagingEnvironment", myStagingEnvironment },
+            { "stagingService", myStagingService },
         },
     };
 });

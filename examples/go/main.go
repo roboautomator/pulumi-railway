@@ -12,17 +12,34 @@ ApiToken: pulumi.String("9fc34a78-1e12-4453-ae87-055803d35715"),
 if err != nil {
 return err
 }
-myEnvironment, err := railway.NewEnvironment(ctx, "myEnvironment", &railway.EnvironmentArgs{
+myTestEnvironment, err := railway.NewEnvironment(ctx, "myTestEnvironment", &railway.EnvironmentArgs{
 ApiToken: pulumi.String("9fc34a78-1e12-4453-ae87-055803d35715"),
 ProjectId: myProject.ProjectId,
 })
 if err != nil {
 return err
 }
-myService, err := railway.NewService(ctx, "myService", &railway.ServiceArgs{
-ProjectId: myProject.ProjectId,
-EnvironmentId: myEnvironment.EnvironmentId,
+myStagingEnvironment, err := railway.NewEnvironment(ctx, "myStagingEnvironment", &railway.EnvironmentArgs{
 ApiToken: pulumi.String("9fc34a78-1e12-4453-ae87-055803d35715"),
+ProjectId: myProject.ProjectId,
+})
+if err != nil {
+return err
+}
+myTestService, err := railway.NewService(ctx, "myTestService", &railway.ServiceArgs{
+ProjectId: myProject.ProjectId,
+EnvironmentId: myTestEnvironment.EnvironmentId,
+ApiToken: pulumi.String("9fc34a78-1e12-4453-ae87-055803d35715"),
+Name: pulumi.String("My Test Service"),
+})
+if err != nil {
+return err
+}
+myStagingService, err := railway.NewService(ctx, "myStagingService", &railway.ServiceArgs{
+ProjectId: myProject.ProjectId,
+EnvironmentId: myStagingEnvironment.EnvironmentId,
+ApiToken: pulumi.String("9fc34a78-1e12-4453-ae87-055803d35715"),
+Name: pulumi.String("My Staging Service"),
 })
 if err != nil {
 return err

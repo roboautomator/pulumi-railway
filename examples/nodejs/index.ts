@@ -2,30 +2,30 @@ import * as pulumi from "@pulumi/pulumi";
 import * as railway from "@pulumi/railway";
 
 const myProject = new railway.Project("myProject", {apiToken: "9fc34a78-1e12-4453-ae87-055803d35715"});
-const myEnvironment = new railway.Environment("myEnvironment", {
+const myTestEnvironment = new railway.Environment("myTestEnvironment", {
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
     projectId: myProject.projectId,
 });
-
-const testEnvironment = new railway.Environment("test", {
+const myStagingEnvironment = new railway.Environment("myStagingEnvironment", {
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
     projectId: myProject.projectId,
 });
-
-const myService = new railway.Service("myService", {
+const myTestService = new railway.Service("myTestService", {
     projectId: myProject.projectId,
-    environmentId: myEnvironment.environmentId,
+    environmentId: myTestEnvironment.environmentId,
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
+    name: "My Test Service",
 });
-
-const testService = new railway.Service("testService", {
+const myStagingService = new railway.Service("myStagingService", {
     projectId: myProject.projectId,
-    environmentId: testEnvironment.environmentId,
+    environmentId: myStagingEnvironment.environmentId,
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
+    name: "My Staging Service",
 });
-
 export const output = {
     project: myProject,
-    environment: myEnvironment,
-    service: myService,
+    testEnvironment: myTestEnvironment,
+    testService: myTestService,
+    stagingEnvironment: myStagingEnvironment,
+    stagingService: myStagingService,
 };

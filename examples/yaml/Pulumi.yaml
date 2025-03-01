@@ -26,15 +26,19 @@ resources:
       projectId: ${myProject.projectId}
       environmentId: ${myTestEnvironment.environmentId}
       apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
+      name: My Test Service
   myStagingService:
     type: railway:Service
     properties:
       projectId: ${myProject.projectId}
-      environmentId: ${myStagingEnviroment.environmentId}
+      environmentId: ${myStagingEnvironment.environmentId}
       apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
+      name: My Staging Service
 
 outputs:
   output:
     project: ${myProject}
-    environment: ${myEnvironment}
-    service: ${myService}
+    testEnvironment: ${myTestEnvironment}
+    testService: ${myTestService}
+    stagingEnvironment: ${myStagingEnvironment}
+    stagingService: ${myStagingService}

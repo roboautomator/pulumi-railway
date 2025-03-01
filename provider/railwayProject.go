@@ -28,7 +28,6 @@ func (Project) Create(ctx context.Context, name string, input ProjectArgs, previ
 		return name, state, nil
 	}
 
-	url := "https://api.railway.app/graphql/v2"
 	payload := map[string]interface{}{
 		"query": fmt.Sprintf(`
 			mutation {
@@ -44,7 +43,7 @@ func (Project) Create(ctx context.Context, name string, input ProjectArgs, previ
 		return "", state, err
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", RailwayAPIURL, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return "", state, err
 	}
@@ -79,7 +78,6 @@ func (Project) Delete(ctx context.Context, name string, input ProjectState) erro
 
 	log.Printf("Deleting project %s", input.ProjectId)
 
-	url := "https://api.railway.app/graphql/v2"
 	payload := map[string]interface{}{
 		"query": fmt.Sprintf(`
 			mutation {
@@ -93,7 +91,7 @@ func (Project) Delete(ctx context.Context, name string, input ProjectState) erro
 		return err
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", RailwayAPIURL, bytes.NewBuffer(jsonData))
 	if err != nil {
 		log.Println("Error creating request:", err)
 		return err
