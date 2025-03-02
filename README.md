@@ -116,3 +116,5 @@ Other resources/examples for implementing providers:
 
 * Create Pulumi Resources for a Railway Project & Railway Service
 * Create Pulumi Component for a Railway App which bundles multiple services into a reusable bundle
+
+// pulumi destroy --logtostderr -v=9

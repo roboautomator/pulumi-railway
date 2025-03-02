@@ -14,13 +14,11 @@ const myTestService = new railway.Service("myTestService", {
     projectId: myProject.projectId,
     environmentId: myTestEnvironment.environmentId,
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
-    name: "My Test Service",
 });
 const myStagingService = new railway.Service("myStagingService", {
     projectId: myProject.projectId,
     environmentId: myStagingEnvironment.environmentId,
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
-    name: "My Staging Service",
 });
 export const output = {
     project: myProject,

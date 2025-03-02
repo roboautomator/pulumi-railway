@@ -27,7 +27,6 @@ return await Deployment.RunAsync(() =>
         ProjectId = myProject.ProjectId,
         EnvironmentId = myTestEnvironment.EnvironmentId,
         ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
-        Name = "My Test Service",
     });
 
     var myStagingService = new Railway.Service("myStagingService", new()
@@ -35,7 +34,6 @@ return await Deployment.RunAsync(() =>
         ProjectId = myProject.ProjectId,
         EnvironmentId = myStagingEnvironment.EnvironmentId,
         ApiToken = "9fc34a78-1e12-4453-ae87-055803d35715",
-        Name = "My Staging Service",
     });
 
     return new Dictionary<string, object?>

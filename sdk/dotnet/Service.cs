@@ -18,9 +18,6 @@ namespace Pulumi.Railway
         [Output("environmentId")]
         public Output<string> EnvironmentId { get; private set; } = null!;
 
-        [Output("name")]
-        public Output<string> Name { get; private set; } = null!;
-
         [Output("projectId")]
         public Output<string> ProjectId { get; private set; } = null!;
 
@@ -80,9 +77,6 @@ namespace Pulumi.Railway
 
         [Input("environmentId", required: true)]
         public Input<string> EnvironmentId { get; set; } = null!;
-
-        [Input("name", required: true)]
-        public Input<string> Name { get; set; } = null!;
 
         [Input("projectId", required: true)]
         public Input<string> ProjectId { get; set; } = null!;

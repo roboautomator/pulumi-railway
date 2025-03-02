@@ -30,7 +30,6 @@ myTestService, err := railway.NewService(ctx, "myTestService", &railway.ServiceA
 ProjectId: myProject.ProjectId,
 EnvironmentId: myTestEnvironment.EnvironmentId,
 ApiToken: pulumi.String("9fc34a78-1e12-4453-ae87-055803d35715"),
-Name: pulumi.String("My Test Service"),
 })
 if err != nil {
 return err
@@ -39,7 +38,6 @@ myStagingService, err := railway.NewService(ctx, "myStagingService", &railway.Se
 ProjectId: myProject.ProjectId,
 EnvironmentId: myStagingEnvironment.EnvironmentId,
 ApiToken: pulumi.String("9fc34a78-1e12-4453-ae87-055803d35715"),
-Name: pulumi.String("My Staging Service"),
 })
 if err != nil {
 return err
