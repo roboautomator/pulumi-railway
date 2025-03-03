@@ -1,10 +1,19 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as railway from "@pulumi/railway";
 
-const myProject = new railway.Project("myProject", {apiToken: "9fc34a78-1e12-4453-ae87-055803d35715"});
+const myProject = new railway.Project("myProject", {
+    apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
+    description: "My first Railway project",
+    defaultEnvironmentName: "Default Environment",
+    isPublic: true,
+    prDeploys: true,
+    runtime: "LEGACY"
+});
 const myTestEnvironment = new railway.Environment("myTestEnvironment", {
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",
     projectId: myProject.projectId,
+    skipInitialDeploys: true,
+    stageInitialChanges: true
 });
 const myStagingEnvironment = new railway.Environment("myStagingEnvironment", {
     apiToken: "9fc34a78-1e12-4453-ae87-055803d35715",

@@ -32,8 +32,13 @@ export class Project extends pulumi.CustomResource {
     }
 
     public readonly apiToken!: pulumi.Output<string>;
+    public readonly defaultEnvironmentName!: pulumi.Output<string | undefined>;
+    public readonly description!: pulumi.Output<string | undefined>;
+    public readonly isPublic!: pulumi.Output<boolean | undefined>;
+    public readonly prDeploys!: pulumi.Output<boolean | undefined>;
     public /*out*/ readonly projectId!: pulumi.Output<string>;
     public /*out*/ readonly result!: pulumi.Output<string>;
+    public readonly runtime!: pulumi.Output<string | undefined>;
 
     /**
      * Create a Project resource with the given unique name, arguments, and options.
@@ -50,12 +55,22 @@ export class Project extends pulumi.CustomResource {
                 throw new Error("Missing required property 'apiToken'");
             }
             resourceInputs["apiToken"] = args ? args.apiToken : undefined;
+            resourceInputs["defaultEnvironmentName"] = args ? args.defaultEnvironmentName : undefined;
+            resourceInputs["description"] = args ? args.description : undefined;
+            resourceInputs["isPublic"] = args ? args.isPublic : undefined;
+            resourceInputs["prDeploys"] = args ? args.prDeploys : undefined;
+            resourceInputs["runtime"] = args ? args.runtime : undefined;
             resourceInputs["projectId"] = undefined /*out*/;
             resourceInputs["result"] = undefined /*out*/;
         } else {
             resourceInputs["apiToken"] = undefined /*out*/;
+            resourceInputs["defaultEnvironmentName"] = undefined /*out*/;
+            resourceInputs["description"] = undefined /*out*/;
+            resourceInputs["isPublic"] = undefined /*out*/;
+            resourceInputs["prDeploys"] = undefined /*out*/;
             resourceInputs["projectId"] = undefined /*out*/;
             resourceInputs["result"] = undefined /*out*/;
+            resourceInputs["runtime"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Project.__pulumiType, name, resourceInputs, opts);
@@ -67,4 +82,9 @@ export class Project extends pulumi.CustomResource {
  */
 export interface ProjectArgs {
     apiToken: pulumi.Input<string>;
+    defaultEnvironmentName?: pulumi.Input<string>;
+    description?: pulumi.Input<string>;
+    isPublic?: pulumi.Input<boolean>;
+    prDeploys?: pulumi.Input<boolean>;
+    runtime?: pulumi.Input<string>;
 }

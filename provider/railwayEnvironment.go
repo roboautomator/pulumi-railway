@@ -1,13 +1,9 @@
 package provider
 
 import (
-    "bytes"
     "context"
     "encoding/json"
     "fmt"
-	"log"
-    "net/http"
-    "io/ioutil"
 )
 
 type Environment struct {}
@@ -15,8 +11,18 @@ type Environment struct {}
 type EnvironmentArgs struct {
 	ApiToken string `pulumi:"apiToken"`
 	ProjectId string `pulumi:"projectId"`
+	SkipInitialDeploys bool `pulumi:"skipInitialDeploys,optional"`
+	// SourceEnvironmentId string `pulumi:"sourceEnvironmentId,optional"`
+	StageInitialChanges bool `pulumi:"stageInitialChanges,optional"`
 }
 
+type EnvironmentCreateInput struct {
+	Name string `json:"name"`
+	ProjectId string `json:"projectId"`
+	SkipInitialDeploys bool `json:"skipInitialDeploys"`
+	// SourceEnvironmentId string `json:"sourceEnvironmentId"`
+	StageInitialChanges bool `json:"stageInitialChanges"`
+}
 
 type EnvironmentState struct {
 	EnvironmentArgs
@@ -24,101 +30,65 @@ type EnvironmentState struct {
 	EnvironmentId string `pulumi:"environmentId"`
 }
 
+type environmentCreateResponseData struct {
+	Data struct {
+		EnvironmentCreate struct {
+			ID string `json:"id"`
+		} `json:"environmentCreate"`
+	} `json:"data"`
+}
+
 func (Environment) Create(ctx context.Context, name string, input EnvironmentArgs, preview bool) (string, EnvironmentState, error) {
+
 	state := EnvironmentState{EnvironmentArgs: input}
+
 	if preview {
 		return name, state, nil
 	}
 
-	url := "https://api.railway.app/graphql/v2"
-	payload := map[string]interface{}{
-		"query": fmt.Sprintf(`
-			mutation {
-				environmentCreate(input: { name: "%s", projectId: "%s" }) {
-					id
-				}
-			}
-		`, name, input.ProjectId),
+	environmentCreateQuery := `
+	mutation environmentCreate($input: EnvironmentCreateInput!) {
+		environmentCreate(input: $input) {
+			id
+		}
+	}`
+	environmentCreateVariables := map[string]interface{}{
+		"input": EnvironmentCreateInput{
+			Name: name,
+			ProjectId: input.ProjectId,
+			SkipInitialDeploys: getOrDefault(input.SkipInitialDeploys, false),
+			// SourceEnvironmentId: getOrDefault(input.SourceEnvironmentId, ""),
+			StageInitialChanges: getOrDefault(input.StageInitialChanges, false),
+		},
 	}
 
-	jsonData, err := json.Marshal(payload)
+	environmentCreateResponse := makeGraphQLRequest(environmentCreateQuery, environmentCreateVariables, input.ApiToken)
+	fmt.Println("Environment Create Response:", environmentCreateResponse)
+
+	var response environmentCreateResponseData
+	err := json.Unmarshal([]byte(environmentCreateResponse), &response)
 	if err != nil {
 		return "", state, err
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-	if err != nil {
-		return "", state, err
-	}
-
-	req.Header.Set("Authorization", "Bearer " + input.ApiToken)
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return "", state, err
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", state, err
-	}
-
-	var response map[string]interface{}
-	if err := json.Unmarshal(body, &response); err != nil {
-		return "", state, err
-	}
-
-	state.EnvironmentId = response["data"].(map[string]interface{})["environmentCreate"].(map[string]interface{})["id"].(string)
-	state.Result = "Environment created successfully"
+	state.Result = environmentCreateResponse
+	state.EnvironmentId = response.Data.EnvironmentCreate.ID
 
 	return name, state, nil
 }
 
 func (Environment) Delete(ctx context.Context, name string, input EnvironmentState) error {
-	url := "https://api.railway.app/graphql/v2"
-	payload := map[string]interface{}{
-		"query": fmt.Sprintf(`
-			mutation {
-				environmentDelete(input: { id: "%s" }) {
-					success
-				}
-			}
-		`, input.EnvironmentId),
+
+	projectDeleteQuery := `
+	mutation environmentDelete($id: String!) {
+			environmentDelete(id: $id)
+	}`
+	projectDeleteVariables := map[string]interface{}{
+		"id": input.EnvironmentId,
 	}
 
-	jsonData, err := json.Marshal(payload)
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Authorization", "Bearer " + input.ApiToken)
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println("Error reading response body:", err)
-		return err
-	}
-
-	fmt.Println(string(body))
-
-	input.Result = "Project deleted"
+	environmentDeleteResponse := makeGraphQLRequest(projectDeleteQuery, projectDeleteVariables, input.ApiToken)
+	fmt.Println("Environment Delete Response:", environmentDeleteResponse)
 
 	return nil
 }

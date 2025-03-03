@@ -15,9 +15,14 @@ import (
 type Project struct {
 	pulumi.CustomResourceState
 
-	ApiToken  pulumi.StringOutput `pulumi:"apiToken"`
-	ProjectId pulumi.StringOutput `pulumi:"projectId"`
-	Result    pulumi.StringOutput `pulumi:"result"`
+	ApiToken               pulumi.StringOutput    `pulumi:"apiToken"`
+	DefaultEnvironmentName pulumi.StringPtrOutput `pulumi:"defaultEnvironmentName"`
+	Description            pulumi.StringPtrOutput `pulumi:"description"`
+	IsPublic               pulumi.BoolPtrOutput   `pulumi:"isPublic"`
+	PrDeploys              pulumi.BoolPtrOutput   `pulumi:"prDeploys"`
+	ProjectId              pulumi.StringOutput    `pulumi:"projectId"`
+	Result                 pulumi.StringOutput    `pulumi:"result"`
+	Runtime                pulumi.StringPtrOutput `pulumi:"runtime"`
 }
 
 // NewProject registers a new resource with the given unique name, arguments, and options.
@@ -63,12 +68,22 @@ func (ProjectState) ElementType() reflect.Type {
 }
 
 type projectArgs struct {
-	ApiToken string `pulumi:"apiToken"`
+	ApiToken               string  `pulumi:"apiToken"`
+	DefaultEnvironmentName *string `pulumi:"defaultEnvironmentName"`
+	Description            *string `pulumi:"description"`
+	IsPublic               *bool   `pulumi:"isPublic"`
+	PrDeploys              *bool   `pulumi:"prDeploys"`
+	Runtime                *string `pulumi:"runtime"`
 }
 
 // The set of arguments for constructing a Project resource.
 type ProjectArgs struct {
-	ApiToken pulumi.StringInput
+	ApiToken               pulumi.StringInput
+	DefaultEnvironmentName pulumi.StringPtrInput
+	Description            pulumi.StringPtrInput
+	IsPublic               pulumi.BoolPtrInput
+	PrDeploys              pulumi.BoolPtrInput
+	Runtime                pulumi.StringPtrInput
 }
 
 func (ProjectArgs) ElementType() reflect.Type {
@@ -112,12 +127,32 @@ func (o ProjectOutput) ApiToken() pulumi.StringOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.ApiToken }).(pulumi.StringOutput)
 }
 
+func (o ProjectOutput) DefaultEnvironmentName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Project) pulumi.StringPtrOutput { return v.DefaultEnvironmentName }).(pulumi.StringPtrOutput)
+}
+
+func (o ProjectOutput) Description() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Project) pulumi.StringPtrOutput { return v.Description }).(pulumi.StringPtrOutput)
+}
+
+func (o ProjectOutput) IsPublic() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Project) pulumi.BoolPtrOutput { return v.IsPublic }).(pulumi.BoolPtrOutput)
+}
+
+func (o ProjectOutput) PrDeploys() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Project) pulumi.BoolPtrOutput { return v.PrDeploys }).(pulumi.BoolPtrOutput)
+}
+
 func (o ProjectOutput) ProjectId() pulumi.StringOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.ProjectId }).(pulumi.StringOutput)
 }
 
 func (o ProjectOutput) Result() pulumi.StringOutput {
 	return o.ApplyT(func(v *Project) pulumi.StringOutput { return v.Result }).(pulumi.StringOutput)
+}
+
+func (o ProjectOutput) Runtime() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Project) pulumi.StringPtrOutput { return v.Runtime }).(pulumi.StringPtrOutput)
 }
 
 func init() {

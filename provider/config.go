@@ -59,3 +59,11 @@ func makeGraphQLRequest(query string, variables interface{}, apiToken string) st
 
 	return string(body)
 }
+
+func getOrDefault[T comparable](value T, defaultValue T) T {
+    var zeroValue T
+    if value == zeroValue {
+        return defaultValue
+    }
+    return value
+}

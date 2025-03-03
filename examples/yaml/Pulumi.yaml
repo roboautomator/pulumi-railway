@@ -10,6 +10,11 @@ resources:
     type: railway:Project
     properties:
       apiToken: 9fc34a78-1e12-4453-ae87-055803d35715
+      description: "Pulumi Project Generated Using NodeJS Example"
+      defaultEnvironmentName: "Custom Default Environment"
+      isPublic: false
+      prDeploys: false
+      runTime: "V2"
   myTestEnvironment:
     type: railway:Environment
     properties:

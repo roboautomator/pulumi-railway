@@ -35,6 +35,8 @@ export class Environment extends pulumi.CustomResource {
     public /*out*/ readonly environmentId!: pulumi.Output<string>;
     public readonly projectId!: pulumi.Output<string>;
     public /*out*/ readonly result!: pulumi.Output<string>;
+    public readonly skipInitialDeploys!: pulumi.Output<boolean | undefined>;
+    public readonly stageInitialChanges!: pulumi.Output<boolean | undefined>;
 
     /**
      * Create a Environment resource with the given unique name, arguments, and options.
@@ -55,6 +57,8 @@ export class Environment extends pulumi.CustomResource {
             }
             resourceInputs["apiToken"] = args ? args.apiToken : undefined;
             resourceInputs["projectId"] = args ? args.projectId : undefined;
+            resourceInputs["skipInitialDeploys"] = args ? args.skipInitialDeploys : undefined;
+            resourceInputs["stageInitialChanges"] = args ? args.stageInitialChanges : undefined;
             resourceInputs["environmentId"] = undefined /*out*/;
             resourceInputs["result"] = undefined /*out*/;
         } else {
@@ -62,6 +66,8 @@ export class Environment extends pulumi.CustomResource {
             resourceInputs["environmentId"] = undefined /*out*/;
             resourceInputs["projectId"] = undefined /*out*/;
             resourceInputs["result"] = undefined /*out*/;
+            resourceInputs["skipInitialDeploys"] = undefined /*out*/;
+            resourceInputs["stageInitialChanges"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Environment.__pulumiType, name, resourceInputs, opts);
@@ -74,4 +80,6 @@ export class Environment extends pulumi.CustomResource {
 export interface EnvironmentArgs {
     apiToken: pulumi.Input<string>;
     projectId: pulumi.Input<string>;
+    skipInitialDeploys?: pulumi.Input<boolean>;
+    stageInitialChanges?: pulumi.Input<boolean>;
 }

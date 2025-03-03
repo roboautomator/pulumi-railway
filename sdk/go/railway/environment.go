@@ -15,10 +15,12 @@ import (
 type Environment struct {
 	pulumi.CustomResourceState
 
-	ApiToken      pulumi.StringOutput `pulumi:"apiToken"`
-	EnvironmentId pulumi.StringOutput `pulumi:"environmentId"`
-	ProjectId     pulumi.StringOutput `pulumi:"projectId"`
-	Result        pulumi.StringOutput `pulumi:"result"`
+	ApiToken            pulumi.StringOutput  `pulumi:"apiToken"`
+	EnvironmentId       pulumi.StringOutput  `pulumi:"environmentId"`
+	ProjectId           pulumi.StringOutput  `pulumi:"projectId"`
+	Result              pulumi.StringOutput  `pulumi:"result"`
+	SkipInitialDeploys  pulumi.BoolPtrOutput `pulumi:"skipInitialDeploys"`
+	StageInitialChanges pulumi.BoolPtrOutput `pulumi:"stageInitialChanges"`
 }
 
 // NewEnvironment registers a new resource with the given unique name, arguments, and options.
@@ -67,14 +69,18 @@ func (EnvironmentState) ElementType() reflect.Type {
 }
 
 type environmentArgs struct {
-	ApiToken  string `pulumi:"apiToken"`
-	ProjectId string `pulumi:"projectId"`
+	ApiToken            string `pulumi:"apiToken"`
+	ProjectId           string `pulumi:"projectId"`
+	SkipInitialDeploys  *bool  `pulumi:"skipInitialDeploys"`
+	StageInitialChanges *bool  `pulumi:"stageInitialChanges"`
 }
 
 // The set of arguments for constructing a Environment resource.
 type EnvironmentArgs struct {
-	ApiToken  pulumi.StringInput
-	ProjectId pulumi.StringInput
+	ApiToken            pulumi.StringInput
+	ProjectId           pulumi.StringInput
+	SkipInitialDeploys  pulumi.BoolPtrInput
+	StageInitialChanges pulumi.BoolPtrInput
 }
 
 func (EnvironmentArgs) ElementType() reflect.Type {
@@ -128,6 +134,14 @@ func (o EnvironmentOutput) ProjectId() pulumi.StringOutput {
 
 func (o EnvironmentOutput) Result() pulumi.StringOutput {
 	return o.ApplyT(func(v *Environment) pulumi.StringOutput { return v.Result }).(pulumi.StringOutput)
+}
+
+func (o EnvironmentOutput) SkipInitialDeploys() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Environment) pulumi.BoolPtrOutput { return v.SkipInitialDeploys }).(pulumi.BoolPtrOutput)
+}
+
+func (o EnvironmentOutput) StageInitialChanges() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *Environment) pulumi.BoolPtrOutput { return v.StageInitialChanges }).(pulumi.BoolPtrOutput)
 }
 
 func init() {

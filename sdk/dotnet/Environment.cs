@@ -24,6 +24,12 @@ namespace Pulumi.Railway
         [Output("result")]
         public Output<string> Result { get; private set; } = null!;
 
+        [Output("skipInitialDeploys")]
+        public Output<bool?> SkipInitialDeploys { get; private set; } = null!;
+
+        [Output("stageInitialChanges")]
+        public Output<bool?> StageInitialChanges { get; private set; } = null!;
+
 
         /// <summary>
         /// Create a Environment resource with the given unique name, arguments, and options.
@@ -74,6 +80,12 @@ namespace Pulumi.Railway
 
         [Input("projectId", required: true)]
         public Input<string> ProjectId { get; set; } = null!;
+
+        [Input("skipInitialDeploys")]
+        public Input<bool>? SkipInitialDeploys { get; set; }
+
+        [Input("stageInitialChanges")]
+        public Input<bool>? StageInitialChanges { get; set; }
 
         public EnvironmentArgs()
         {

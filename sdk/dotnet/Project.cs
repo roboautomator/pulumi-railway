@@ -15,11 +15,26 @@ namespace Pulumi.Railway
         [Output("apiToken")]
         public Output<string> ApiToken { get; private set; } = null!;
 
+        [Output("defaultEnvironmentName")]
+        public Output<string?> DefaultEnvironmentName { get; private set; } = null!;
+
+        [Output("description")]
+        public Output<string?> Description { get; private set; } = null!;
+
+        [Output("isPublic")]
+        public Output<bool?> IsPublic { get; private set; } = null!;
+
+        [Output("prDeploys")]
+        public Output<bool?> PrDeploys { get; private set; } = null!;
+
         [Output("projectId")]
         public Output<string> ProjectId { get; private set; } = null!;
 
         [Output("result")]
         public Output<string> Result { get; private set; } = null!;
+
+        [Output("runtime")]
+        public Output<string?> Runtime { get; private set; } = null!;
 
 
         /// <summary>
@@ -68,6 +83,21 @@ namespace Pulumi.Railway
     {
         [Input("apiToken", required: true)]
         public Input<string> ApiToken { get; set; } = null!;
+
+        [Input("defaultEnvironmentName")]
+        public Input<string>? DefaultEnvironmentName { get; set; }
+
+        [Input("description")]
+        public Input<string>? Description { get; set; }
+
+        [Input("isPublic")]
+        public Input<bool>? IsPublic { get; set; }
+
+        [Input("prDeploys")]
+        public Input<bool>? PrDeploys { get; set; }
+
+        [Input("runtime")]
+        public Input<string>? Runtime { get; set; }
 
         public ProjectArgs()
         {
