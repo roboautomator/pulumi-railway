@@ -2,6 +2,8 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 export class Service extends pulumi.CustomResource {
@@ -33,9 +35,12 @@ export class Service extends pulumi.CustomResource {
 
     public readonly apiToken!: pulumi.Output<string>;
     public readonly environmentId!: pulumi.Output<string>;
+    public readonly icon!: pulumi.Output<string | undefined>;
     public readonly projectId!: pulumi.Output<string>;
     public /*out*/ readonly result!: pulumi.Output<string>;
     public /*out*/ readonly serviceId!: pulumi.Output<string>;
+    public readonly source!: pulumi.Output<outputs.ServiceSource | undefined>;
+    public readonly variables!: pulumi.Output<{[key: string]: string} | undefined>;
 
     /**
      * Create a Service resource with the given unique name, arguments, and options.
@@ -59,15 +64,21 @@ export class Service extends pulumi.CustomResource {
             }
             resourceInputs["apiToken"] = args ? args.apiToken : undefined;
             resourceInputs["environmentId"] = args ? args.environmentId : undefined;
+            resourceInputs["icon"] = args ? args.icon : undefined;
             resourceInputs["projectId"] = args ? args.projectId : undefined;
+            resourceInputs["source"] = args ? args.source : undefined;
+            resourceInputs["variables"] = args ? args.variables : undefined;
             resourceInputs["result"] = undefined /*out*/;
             resourceInputs["serviceId"] = undefined /*out*/;
         } else {
             resourceInputs["apiToken"] = undefined /*out*/;
             resourceInputs["environmentId"] = undefined /*out*/;
+            resourceInputs["icon"] = undefined /*out*/;
             resourceInputs["projectId"] = undefined /*out*/;
             resourceInputs["result"] = undefined /*out*/;
             resourceInputs["serviceId"] = undefined /*out*/;
+            resourceInputs["source"] = undefined /*out*/;
+            resourceInputs["variables"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Service.__pulumiType, name, resourceInputs, opts);
@@ -80,5 +91,8 @@ export class Service extends pulumi.CustomResource {
 export interface ServiceArgs {
     apiToken: pulumi.Input<string>;
     environmentId: pulumi.Input<string>;
+    icon?: pulumi.Input<string>;
     projectId: pulumi.Input<string>;
+    source?: pulumi.Input<inputs.ServiceSourceArgs>;
+    variables?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }

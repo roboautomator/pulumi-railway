@@ -18,6 +18,9 @@ namespace Pulumi.Railway
         [Output("environmentId")]
         public Output<string> EnvironmentId { get; private set; } = null!;
 
+        [Output("icon")]
+        public Output<string?> Icon { get; private set; } = null!;
+
         [Output("projectId")]
         public Output<string> ProjectId { get; private set; } = null!;
 
@@ -26,6 +29,12 @@ namespace Pulumi.Railway
 
         [Output("serviceId")]
         public Output<string> ServiceId { get; private set; } = null!;
+
+        [Output("source")]
+        public Output<Outputs.ServiceSource?> Source { get; private set; } = null!;
+
+        [Output("variables")]
+        public Output<ImmutableDictionary<string, string>?> Variables { get; private set; } = null!;
 
 
         /// <summary>
@@ -78,8 +87,22 @@ namespace Pulumi.Railway
         [Input("environmentId", required: true)]
         public Input<string> EnvironmentId { get; set; } = null!;
 
+        [Input("icon")]
+        public Input<string>? Icon { get; set; }
+
         [Input("projectId", required: true)]
         public Input<string> ProjectId { get; set; } = null!;
+
+        [Input("source")]
+        public Input<Inputs.ServiceSourceArgs>? Source { get; set; }
+
+        [Input("variables")]
+        private InputMap<string>? _variables;
+        public InputMap<string> Variables
+        {
+            get => _variables ?? (_variables = new InputMap<string>());
+            set => _variables = value;
+        }
 
         public ServiceArgs()
         {

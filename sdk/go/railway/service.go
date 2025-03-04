@@ -15,11 +15,14 @@ import (
 type Service struct {
 	pulumi.CustomResourceState
 
-	ApiToken      pulumi.StringOutput `pulumi:"apiToken"`
-	EnvironmentId pulumi.StringOutput `pulumi:"environmentId"`
-	ProjectId     pulumi.StringOutput `pulumi:"projectId"`
-	Result        pulumi.StringOutput `pulumi:"result"`
-	ServiceId     pulumi.StringOutput `pulumi:"serviceId"`
+	ApiToken      pulumi.StringOutput    `pulumi:"apiToken"`
+	EnvironmentId pulumi.StringOutput    `pulumi:"environmentId"`
+	Icon          pulumi.StringPtrOutput `pulumi:"icon"`
+	ProjectId     pulumi.StringOutput    `pulumi:"projectId"`
+	Result        pulumi.StringOutput    `pulumi:"result"`
+	ServiceId     pulumi.StringOutput    `pulumi:"serviceId"`
+	Source        ServiceSourcePtrOutput `pulumi:"source"`
+	Variables     pulumi.StringMapOutput `pulumi:"variables"`
 }
 
 // NewService registers a new resource with the given unique name, arguments, and options.
@@ -71,16 +74,22 @@ func (ServiceState) ElementType() reflect.Type {
 }
 
 type serviceArgs struct {
-	ApiToken      string `pulumi:"apiToken"`
-	EnvironmentId string `pulumi:"environmentId"`
-	ProjectId     string `pulumi:"projectId"`
+	ApiToken      string            `pulumi:"apiToken"`
+	EnvironmentId string            `pulumi:"environmentId"`
+	Icon          *string           `pulumi:"icon"`
+	ProjectId     string            `pulumi:"projectId"`
+	Source        *ServiceSource    `pulumi:"source"`
+	Variables     map[string]string `pulumi:"variables"`
 }
 
 // The set of arguments for constructing a Service resource.
 type ServiceArgs struct {
 	ApiToken      pulumi.StringInput
 	EnvironmentId pulumi.StringInput
+	Icon          pulumi.StringPtrInput
 	ProjectId     pulumi.StringInput
+	Source        ServiceSourcePtrInput
+	Variables     pulumi.StringMapInput
 }
 
 func (ServiceArgs) ElementType() reflect.Type {
@@ -128,6 +137,10 @@ func (o ServiceOutput) EnvironmentId() pulumi.StringOutput {
 	return o.ApplyT(func(v *Service) pulumi.StringOutput { return v.EnvironmentId }).(pulumi.StringOutput)
 }
 
+func (o ServiceOutput) Icon() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Service) pulumi.StringPtrOutput { return v.Icon }).(pulumi.StringPtrOutput)
+}
+
 func (o ServiceOutput) ProjectId() pulumi.StringOutput {
 	return o.ApplyT(func(v *Service) pulumi.StringOutput { return v.ProjectId }).(pulumi.StringOutput)
 }
@@ -138,6 +151,14 @@ func (o ServiceOutput) Result() pulumi.StringOutput {
 
 func (o ServiceOutput) ServiceId() pulumi.StringOutput {
 	return o.ApplyT(func(v *Service) pulumi.StringOutput { return v.ServiceId }).(pulumi.StringOutput)
+}
+
+func (o ServiceOutput) Source() ServiceSourcePtrOutput {
+	return o.ApplyT(func(v *Service) ServiceSourcePtrOutput { return v.Source }).(ServiceSourcePtrOutput)
+}
+
+func (o ServiceOutput) Variables() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *Service) pulumi.StringMapOutput { return v.Variables }).(pulumi.StringMapOutput)
 }
 
 func init() {
