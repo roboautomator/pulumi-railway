@@ -17,7 +17,7 @@ package main
 import (
 	p "github.com/pulumi/pulumi-go-provider"
 
-	railway "github.com/roboautomator/pulumi-railway/provider"
+	railway "github.com/roboautomator/pulumi-railway/tree/main/provider"
 )
 
 // Serve the provider against Pulumi's Provider protocol.
