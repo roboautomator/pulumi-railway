@@ -4,7 +4,7 @@ archives:
     name_template: '{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
 before:
   hooks:
-    - make gen
+    - make gen_examples
 builds:
   - binary: pulumi-resource-railway
     dir: provider
