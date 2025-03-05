@@ -14,7 +14,7 @@ resources:
       defaultEnvironmentName: "Custom Default Environment"
       isPublic: false
       prDeploys: false
-      runTime: "V2"
+      runtime: "V2"
   myTestEnvironment:
     type: railway:Environment
     properties:
