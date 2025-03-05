@@ -2,9 +2,9 @@ version: 2
 archives:
   - id: archive
     name_template: '{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}'
-before:
-  hooks:
-    - make gen_examples
+# before:
+#   hooks:
+#     - make gen
 builds:
   - binary: pulumi-resource-railway
     dir: provider
