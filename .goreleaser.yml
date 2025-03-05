@@ -19,7 +19,7 @@ builds:
       - linux
     ldflags:
       # The line below MUST align with the module in current provider/go.mod
-      - -X github.com/your-org-name/pulumi-railway/provider/Version={{.Tag }}
+      - -X https://github.com/roboautomator/pulumi-railway/tree/main/provider
     main: ./cmd/pulumi-resource-railway/
 # changelog:
 #   skip: true
