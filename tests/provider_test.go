@@ -25,7 +25,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	railway "github.com/roboautomator/pulumi-railway/tree/main/provider"
+	railway "github.com/roboautomator/pulumi-railway/provider"
 )
 
 func TestRandomCreate(t *testing.T) {
